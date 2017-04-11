@@ -37,7 +37,7 @@ class Config:
     # Enable to train
     TRAIN_MODELS = True
     # Load old models. Throws if the model doesn't exist
-    LOAD_CHECKPOINT = False
+    LOAD_CHECKPOINT = True
     # If 0, the latest checkpoint is loaded
     LOAD_EPISODE = 0 
 
@@ -114,7 +114,7 @@ class Config:
     # Log and save
 
     # Enable TensorBoard
-    TENSORBOARD = False
+    TENSORBOARD = True
     # Update TensorBoard every X training steps
     TENSORBOARD_UPDATE_FREQUENCY = 1000
 
