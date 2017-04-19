@@ -29,7 +29,9 @@ import sys
 import warnings
 if sys.version_info < (3,0):
     warnings.warn("Optimized for Python3. Performance may suffer under Python2.", Warning)
-
+import os
+os.environ["DISPLAY"]=":0"
+print ("DISPLAY=",os.environ["DISPLAY"])
 import gym
 
 from Config import Config

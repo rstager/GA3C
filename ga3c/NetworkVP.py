@@ -66,8 +66,7 @@ class NetworkVP:
                 
 
     def _create_graph(self):
-        self.x = tf.placeholder(
-            tf.float32, [None, self.img_height, self.img_width, self.img_channels], name='X')
+        self.x = tf.placeholder(tf.float32, [None, self.img_height, self.img_width, self.img_channels], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
 
         self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
@@ -108,10 +107,14 @@ class NetworkVP:
             self.cost_p_2 = -1 * self.var_beta * \
                         tf.reduce_sum(tf.log(tf.maximum(self.softmax_p, self.log_epsilon)) *
                                       self.softmax_p, axis=1)
-        
+        #self.cost_activity = tf.multiply(tf.constant(0.001,tf.float32),
+        #                                 tf.cast(tf.logical_or(tf.equal(self.y_r, tf.constant(2,tf.float32)), tf.equal(self.y_r, tf.constant(3,tf.float32))), tf.float32))
+
+        self.cost_activity = tf.multiply(tf.constant(0.005,tf.float32), tf.cast(tf.equal(self.y_r, tf.constant(0,tf.float32)), tf.float32))
         self.cost_p_1_agg = tf.reduce_sum(self.cost_p_1, axis=0)
         self.cost_p_2_agg = tf.reduce_sum(self.cost_p_2, axis=0)
-        self.cost_p = -(self.cost_p_1_agg + self.cost_p_2_agg)
+        self.cost_activity_agg = tf.reduce_sum(self.cost_activity,axis=0)
+        self.cost_p = -(self.cost_p_1_agg + self.cost_p_2_agg + self.cost_activity_agg)
         
         if Config.DUAL_RMSPROP:
             self.opt_p = tf.train.RMSPropOptimizer(
