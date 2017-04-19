@@ -29,6 +29,9 @@ from multiprocessing import Process, Queue, Value
 
 import numpy as np
 import time
+import pickle
+import gzip
+
 
 from Config import Config
 from Environment import Environment
@@ -106,6 +109,9 @@ class ProcessAgent(Process):
             if done or time_count == Config.TIME_MAX:
                 terminal_reward = 0 if done else value
 
+                if Config.SAVE_EXPERIENCE:
+                    self.save_exp(experiences)
+
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 if len(updated_exps) == 0:
                     yield None, None, None, total_reward
@@ -136,3 +142,17 @@ class ProcessAgent(Process):
                 total_length += len(r_) + 1  # +1 for last frame that we drop
                 self.training_q.put((x_, r_, a_))
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
+
+
+    def load_exp(self):
+        try:
+            with gzip.open(Config.EXPERIENCE_FILE) as f:
+                experiences = pickle.load(f)
+        except:
+            experiences = []
+        return experiences
+
+
+    def save_exp(self,experiences):
+        with gzip.open(Config.EXPERIENCE_FILE, "ab") as f:
+            pickle.dump(experiences, f)

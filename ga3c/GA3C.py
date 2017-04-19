@@ -55,6 +55,8 @@ if Config.PLAY_MODE:
     Config.TRAIN_MODELS = False
     Config.SAVE_MODELS = False
 
+    Config.IMITATION_LEARNING = False
+
 gym.undo_logger_setup()
 
 # Start main program

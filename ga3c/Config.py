@@ -33,13 +33,17 @@ class Config:
     ATARI_GAME = 'PongDeterministic-v0'
 
     # Enable to see the trained agent in action
-    PLAY_MODE = False
+    PLAY_MODE = True
     # Enable to
     TRAIN_MODELS = True
     # Load old models. Throws if the model doesn't exist
-    LOAD_CHECKPOINT = False
+    LOAD_CHECKPOINT = True
     # If 0, the latest checkpoint is loaded
-    LOAD_EPISODE = 0
+    LOAD_EPISODE = 11000
+    #
+    IMITATION_LEARNING = False
+    SAVE_EXPERIENCE = True
+    EXPERIENCE_FILE = "experience.dat"
 
     #########################################################################
     # Number of agents, predictors, trainers and other system settings
